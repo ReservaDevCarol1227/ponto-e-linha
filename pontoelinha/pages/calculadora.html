@@ -1,35 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora</title>
+  <meta charset="UTF-8">
+  <title>Calculadora de Crochê</title>
 </head>
 <body>
-    <header>
-        <img src="" alt="Logo da header">
-        <h1>Ponto&Linha</h1>
 
-        <button onclick="window.location.href='perfil.html'">Perfil</button>
-        <button onclick="window.location.href='config.html'">Configurações</button>
-    </header>
+  <form id="form-projeto">
+    <label>Nome do Projeto:</label>
+    <input type="text" name="nome" required><br>
 
-    <main>
-        <form action="">
+    <label>Agulha utilizada:</label>
+    <input type="text" name="agulha" required><br>
 
-            <label for="nome_proj">Nome do Projeto:</label>
-            <input type="text" id="nome_proj" name="nome_proj" required> <br>
+    <label>Padrão de crochê:</label>
+    <input type="text" name="padrao" required><br>
 
-            <label for="agulha-proj">Agulha utilizada:</label>
-            <input type="float" id="agulha_proj" name="agulha_proj" required> <br>
-            
-            <label for="projeto">Digite seu padrão de crochê:</label>
-            <input type="text" id="projeto" name="projeto" required> <br>
+    <button type="button" onclick="calcularProjeto()">Calcular</button>
+  </form>
 
-            <button>Calcular</button>
-        </form>
-        
-    </main>
+  <div id="resultado" style="margin-top:20px;"></div>
+  <button id="btn-salvar" style="display:none;" onclick="salvarProjeto()">Salvar no Perfil</button>
+
+  <script>
+    let projetoCalculado = {};
+  
+    function calcularProjeto() {
+      const form = document.getElementById('form-projeto');
+      const nome = form.nome.value;
+      const agulha = form.agulha.value;
+      const padrao = form.padrao.value;
+  
+      // Simulação de cálculo
+      const gramas = "200g";
+      const tempo = "3h";
+      const uso = "180g";
+  
+      projetoCalculado = { nome, agulha, padrao, gramas, tempo, uso };
+  
+      document.getElementById('resultado').innerHTML = `
+        <h3>Resultado:</h3>
+        <p><strong>Nome:</strong> ${nome}</p>
+        <p><strong>Agulha:</strong> ${agulha}</p>
+        <p><strong>Gramas:</strong> ${gramas}</p>
+        <p><strong>Tempo estimado:</strong> ${tempo}</p>
+        <p><strong>Uso estimado:</strong> ${uso}</p>
+      `;
+  
+      document.getElementById('btn-salvar').style.display = 'inline-block';
+    }
+  
+    function salvarProjeto() {
+      const form = document.getElementById('form-projeto');
+      const dados = new FormData(form);
+  
+      dados.append("gramas", projetoCalculado.gramas);
+      dados.append("tempo", projetoCalculado.tempo);
+      dados.append("uso", projetoCalculado.uso);
+  
+      fetch('salvar.php', {
+        method: 'POST',
+        body: dados
+      })
+      .then(res => res.json())
+      .then(res => {
+        alert(res.mensagem);
+        document.getElementById('btn-salvar').style.display = 'none';
+        form.reset();
+        document.getElementById('resultado').innerHTML = '';
+      })
+      .catch(err => {
+        console.error("Erro ao salvar:", err);
+        alert("Erro ao salvar o projeto. Veja o console.");
+      });
+    }
+  </script>
 </body>
 </html>

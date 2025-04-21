@@ -1,40 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
+  <meta charset="UTF-8">
+  <title>Cadastro</title>
 </head>
 <body>
-    <main>
-        <figure>
-            <img src="" alt="Imagem principal do cadastro">
-        </figure>
-
-        <h1>Conectar-se</h1>
-        <h1>Ponto&Linha</h1>
-
-        <form action="">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required> <br>
-
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email" required> <br>
-
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" required> <br>
-
-            <label for="conf-senha">Confirmar Senha:</label>
-            <input type="password" id="conf-senha" name="conf_senha" required> <br>
-
-            <button>Criar e Entrar</button>
-        </form>
-
-        <a href="index.html">Voltar</a>
-
-        <a href="">Tendo problemas? <br> 
-            Nos contate aqui!</a>
-    </main>
+  <main>
+    <h1>Criar conta — Ponto&Linha</h1>
+    <form action="registrar.php" method="POST">
+      <label>Nome:</label>
+      <input type="text" name="nome" required><br>
+      <label>Email:</label>
+      <input type="email" name="email" required><br>
+      <label>Senha:</label>
+      <input type="password" name="senha" required><br>
+      <label>Confirmar senha:</label>
+      <input type="password" name="conf_senha" required><br>
+      <button type="submit">Criar e Entrar</button>
+    </form>
+    <a href="login.html">Voltar ao login</a>
+  </main>
 </body>
 </html>
