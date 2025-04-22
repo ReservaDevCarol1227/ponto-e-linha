@@ -5,7 +5,9 @@
   <title>Calculadora de Crochê</title>
 </head>
 <body>
-
+  <a href="../config/perfil.php">
+    <button style="margin-top: 15px;">Perfil</button>
+  </a>
   <form id="form-projeto">
     <label>Nome do Projeto:</label>
     <input type="text" name="nome" required><br>
@@ -31,7 +33,7 @@
       const agulha = form.agulha.value;
       const padrao = form.padrao.value;
   
-      // Simulação de cálculo
+      // Simulação de cálculo, apagar quando a calculadora estiver pronta
       const gramas = "200g";
       const tempo = "3h";
       const uso = "180g";
@@ -58,7 +60,7 @@
       dados.append("tempo", projetoCalculado.tempo);
       dados.append("uso", projetoCalculado.uso);
   
-      fetch('salvar.php', {
+      fetch('../config/salvar.php', {
         method: 'POST',
         body: dados
       })

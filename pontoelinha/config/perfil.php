@@ -7,11 +7,14 @@
 </head>
 <body>
   <h1>Olá, <?= $_SESSION['nome'] ?>!</h1>
-  <a href="logout.php">Sair</a>
   <div id="projetos"></div>
+  <a href="../pages/calculadora.html">
+  <button style="margin-bottom: 15px;">Calculadora</button>
+</a>
+  <a href="logout.php">Sair</a>
 
   <script>
-  fetch('projetos.php')
+  fetch('../config/projetos.php')
     .then(res => res.json())
     .then(projetos => {
       const container = document.getElementById('projetos');

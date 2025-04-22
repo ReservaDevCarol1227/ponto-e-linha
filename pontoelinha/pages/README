@@ -1,6 +1,7 @@
 A pasta de "pages" foi criada para armazernar:
 - HTML.
-- Páginas em PHP.
+
+LEMBRETE: a página de perfil não possui html, apenas php, logo ela está na pasta 'config'
 
 COMO RODAR O PROJETO USANDO O XAMPP
 
@@ -29,4 +30,4 @@ Passo 3:
 Passo 4 (IMPORTANTE: VOCÊS VÃO REPETIR ESSE PASSO SEMPRE QUE QUISEREM RODAR O SITE):
 
 - acesse o localhost e digitem o arquivo que vocês querem
-- http://localhost/pontoelinha/pages/digita_aqui_a_pagina_q_vcs_querem_rodar_aqui (ex: http://localhost/pontoelinha/pages/calculadora.html)
+- http://localhost/pontoelinha/digita_a_pasta_onde_ta_o_arquivo/digita_aqui_a_pagina_q_vcs_querem_rodar_aqui (exs: http://localhost/pontoelinha/pages/calculadora.html | http://localhost/pontoelinha/config/perfil.php)
