@@ -21,3 +21,4 @@ $_SESSION['usuario_id'] = $pdo->lastInsertId();
 $_SESSION['nome'] = $nome;
 
 header('Location: perfil.php');
+
