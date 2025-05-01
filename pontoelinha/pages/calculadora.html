@@ -1,81 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Calculadora de Crochê</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
 </head>
 <body>
-  <a href="../config/perfil.php">
-    <button style="margin-top: 15px;">Perfil</button>
-  </a>
-  <form id="form-projeto">
-    <label>Nome do Projeto:</label>
-    <input type="text" name="nome" required><br>
+    <header>
+        <img src="" alt="Logo da header">
+        <h1>Ponto&Linha</h1>
 
-    <label>Agulha utilizada:</label>
-    <input type="text" name="agulha" required><br>
+        <button onclick="window.location.href='perfil.html'">Perfil</button>
+        <button onclick="window.location.href='config.html'">Configurações</button>
+    </header>
 
-    <label>Padrão de crochê:</label>
-    <input type="text" name="padrao" required><br>
+    <form id="form-proj">
+        <label for="nome-proj">Nome do Projeto:</label>
+        <input type="text" name="nome-proj" id="nome-proj"><br>
 
-    <button type="button" onclick="calcularProjeto()">Calcular</button>
-  </form>
+        <label for="agulha-proj">Agulha utilizada:</label>
+        <select name="agulha_proj" id="agulha_proj" required>
+            <option value="3.0">3.0</option>
+            <option value="3.5">3.5</option>
+            <option value="4.0">4.0</option>
+            <option value="4.5">4.5</option>
+            <option value="5.0">5.0</option>
+            <option value="5.5">5.5</option>
+            <option value="6.0">6.0</option>
+            <option value="6.5">6.5</option>
+        </select><br>
 
-  <div id="resultado" style="margin-top:20px;"></div>
-  <button id="btn-salvar" style="display:none;" onclick="salvarProjeto()">Salvar no Perfil</button>
+        <p>Digite abaixo a quantidade de pontos do seu projeto:</p>
 
-  <script>
-    let projetoCalculado = {};
-  
-    function calcularProjeto() {
-      const form = document.getElementById('form-projeto');
-      const nome = form.nome.value;
-      const agulha = form.agulha.value;
-      const padrao = form.padrao.value;
-  
-      // Simulação de cálculo, apagar quando a calculadora estiver pronta
-      const gramas = "200g";
-      const tempo = "3h";
-      const uso = "180g";
-  
-      projetoCalculado = { nome, agulha, padrao, gramas, tempo, uso };
-  
-      document.getElementById('resultado').innerHTML = `
-        <h3>Resultado:</h3>
-        <p><strong>Nome:</strong> ${nome}</p>
-        <p><strong>Agulha:</strong> ${agulha}</p>
-        <p><strong>Gramas:</strong> ${gramas}</p>
-        <p><strong>Tempo estimado:</strong> ${tempo}</p>
-        <p><strong>Uso estimado:</strong> ${uso}</p>
-      `;
-  
-      document.getElementById('btn-salvar').style.display = 'inline-block';
-    }
-  
-    function salvarProjeto() {
-      const form = document.getElementById('form-projeto');
-      const dados = new FormData(form);
-  
-      dados.append("gramas", projetoCalculado.gramas);
-      dados.append("tempo", projetoCalculado.tempo);
-      dados.append("uso", projetoCalculado.uso);
-  
-      fetch('../config/salvar.php', {
-        method: 'POST',
-        body: dados
-      })
-      .then(res => res.json())
-      .then(res => {
-        alert(res.mensagem);
-        document.getElementById('btn-salvar').style.display = 'none';
-        form.reset();
-        document.getElementById('resultado').innerHTML = '';
-      })
-      .catch(err => {
-        console.error("Erro ao salvar:", err);
-        alert("Erro ao salvar o projeto. Veja o console.");
-      });
-    }
-  </script>
+        <label for="co">Correntinha:</label>
+        <input type="number" name="co" id="co" value="0"><br>
+
+        <label for="pbx">Ponto Baixíssimo:</label>
+        <input type="number" name="pbx" id="pbx" value="0"><br>
+
+        <label for="pb">Ponto Baixo:</label>
+        <input type="number" name="pb" id="pb" value="0"><br>
+
+        <label for="pma">Ponto Meio-Alto:</label>
+        <input type="number" name="pma" id="pma" value="0"><br>
+
+        <label for="pa">Ponto Alto:</label>
+        <input type="number" name="pa" id="pa" value="0"><br>
+
+        <label for="pda">Ponto Duplo-Alto:</label>
+        <input type="number" name="pda" id="pda" value="0"><br>
+
+        <button type="submit">Calcular</button>
+    </form>
+
+    <div id="resultado"></div>
+
+    <script src="../assets/calculadora.js"></script>
 </body>
 </html>
