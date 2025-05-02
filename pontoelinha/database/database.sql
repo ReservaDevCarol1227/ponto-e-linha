@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS projetos (
   gramas VARCHAR(50),
   tempo_estimado VARCHAR(50),
   uso_estimado VARCHAR(50),
+  metros DECIMAL(10,2),
   imagem VARCHAR(255),
   usuario_id INT,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

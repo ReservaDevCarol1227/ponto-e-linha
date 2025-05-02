@@ -1,0 +1,1 @@
+Essa pasta aqui é para o sistema conseguir salvar imagens no banco de dados.

@@ -1,6 +1,11 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: ../pages/login.html');
+    http_response_code(401);
+    echo json_encode(['autenticado' => false]);
     exit;
 }
+
+http_response_code(200);
+echo json_encode(['autenticado' => true]);

@@ -1,4 +1,11 @@
-<?php include 'verifica_login.php'; ?>
+<?php
+session_start();
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../pages/login.html");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
