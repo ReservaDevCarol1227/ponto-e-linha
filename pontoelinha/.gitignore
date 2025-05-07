@@ -1,0 +1,34 @@
+# Node.js
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Resultados dos testes
+coverage/
+*.log
+
+# VSCode
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# WebDriver
+C:/WebDriver/
+*.exe
+
+# Cache do Jest
+jest-cache/
+jest-coverage/
+
+# Pastas temporárias dos testes
+tests/__snapshots__/
+tests/__output__/
+
+
+# Ambientes locais
+.env
+.env.local
+*.bak
+*.tmp
