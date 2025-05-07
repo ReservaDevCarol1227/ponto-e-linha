@@ -8,7 +8,7 @@ describe('CT-002 (E2E) - Login com redirecionamento para calculadora', () => {
   let driver;
 
   beforeAll(async () => {
-    log.start('Iniciando driver Microsoft Edge');
+    log.start('Iniciando driver do Microsoft Edge');
 
     const service = new edge.ServiceBuilder('C:\\WebDriver\\msedgedriver.exe');
     const options = new edge.Options();
