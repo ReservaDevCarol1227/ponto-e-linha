@@ -4,7 +4,7 @@ const log = require('../helpers/logger');
 
 jest.setTimeout(25000);
 
-describe('CT-003 (E2E) - Editar nome do projeto', () => {
+describe('CT-003 - Editar nome do projeto', () => {
   let driver;
 
   beforeAll(async () => {
