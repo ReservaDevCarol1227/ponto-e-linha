@@ -23,7 +23,7 @@ Precisa ter:
 
 - Rode o sistema normalmente com o Xampp (fazendo aquele processo lá de copiar a pasta do projeto e colar na pasta "htdocs")
 
-- Vá para a página de cadasro e cadastre um usuário com as seguintes informações:
+- Vá para a página de cadastro e cadastre um usuário com as seguintes informações:
 
 Nome: Ciclano
 Email: ciclano@email.com
