@@ -6,6 +6,9 @@ const popupLogin = document.getElementById('popup-login');
 const formSalvar = document.getElementById('popup-form');
 const formLogin = document.getElementById('login-form');
 const formCadastro = document.getElementById('cadastro-form');
+const inputImagem = document.getElementById('popup-imagem');
+const previewImg = document.getElementById('preview-img');
+const previewContainer = document.getElementById('preview-container');
 
 const agulhas = {
   "3.0": { co: 2, pbx: 2, pb: 4, pma: 5.5, pa: 7.5, pda: 10.5 },
@@ -18,68 +21,61 @@ const agulhas = {
   "6.5": { co: 9.5, pbx: 9.5, pb: 11.5, pma: 13, pa: 15, pda: 18 }
 };
 
-const tempos = {
-  co: 2, pbx: 3, pb: 5, pma: 7, pa: 9, pda: 11
-};
+const tempos = { co: 2, pbx: 3, pb: 5, pma: 7, pa: 9, pda: 11 };
 
+// Cálculo
 form.addEventListener('submit', (e) => {
   e.preventDefault();
 
   const data = {
-    co: parseInt(document.getElementById('co').value) || 0,
-    pbx: parseInt(document.getElementById('pbx').value) || 0,
-    pb: parseInt(document.getElementById('pb').value) || 0,
-    pma: parseInt(document.getElementById('pma').value) || 0,
-    pa: parseInt(document.getElementById('pa').value) || 0,
-    pda: parseInt(document.getElementById('pda').value) || 0,
-    agulha: document.getElementById('agulha_proj').value
+    co: parseInt(form.co.value) || 0,
+    pbx: parseInt(form.pbx.value) || 0,
+    pb: parseInt(form.pb.value) || 0,
+    pma: parseInt(form.pma.value) || 0,
+    pa: parseInt(form.pa.value) || 0,
+    pda: parseInt(form.pda.value) || 0,
+    agulha: form.agulha_proj.value
   };
 
-  const tempoTotal = (data.co * tempos.co) + (data.pbx * tempos.pbx) +
-    (data.pb * tempos.pb) + (data.pma * tempos.pma) +
-    (data.pa * tempos.pa) + (data.pda * tempos.pda);
-
+  const tempoTotal = Object.keys(tempos).reduce((soma, tipo) => soma + (data[tipo] * tempos[tipo]), 0);
   const horas = Math.floor(tempoTotal / 3600);
   const minutos = Math.floor((tempoTotal % 3600) / 60);
   const segundos = Math.floor(tempoTotal % 60);
 
   const agulhaData = agulhas[data.agulha];
-  let centimetros = 0;
-  if (agulhaData) {
-    centimetros = (data.co * agulhaData.co) + (data.pbx * agulhaData.pbx) +
-      (data.pb * agulhaData.pb) + (data.pma * agulhaData.pma) +
-      (data.pa * agulhaData.pa) + (data.pda * agulhaData.pda);
-  }
-
-  const metros = centimetros / 100;
+  const cm = agulhaData
+    ? Object.keys(agulhaData).reduce((total, tipo) => total + (data[tipo] * agulhaData[tipo]), 0)
+    : 0;
+  const metros = cm / 100;
 
   resultadoDiv.innerHTML = `
     <h3>Resultado:</h3>
     <p><strong>Tempo estimado:</strong> ${horas}h ${minutos}min ${segundos}s</p>
-    <p><strong>Comprimento estimado de linha usada:</strong> ${metros.toFixed(2)} metros</p>
+    <p><strong>Comprimento estimado:</strong> ${metros.toFixed(2)} metros</p>
     <p><strong>Gramas estimadas:</strong> ${(metros * 4.2).toFixed(1)}g</p>
     <p><strong>Uso estimado:</strong> ${(metros * 4.0).toFixed(1)}g</p>
   `;
 
-  form.dataset.tempo = `${horas}h ${minutos}min ${segundos}s`;
-  form.dataset.uso = `${(metros * 4.0).toFixed(1)}g`;
-  form.dataset.gramas = `${(metros * 4.2).toFixed(1)}g`;
-  form.dataset.agulha = data.agulha;
-  form.dataset.metros = metros.toFixed(2);
+  Object.assign(form.dataset, {
+    tempo: `${horas}h ${minutos}min ${segundos}s`,
+    uso: (metros * 4.0).toFixed(1) + 'g',
+    gramas: (metros * 4.2).toFixed(1) + 'g',
+    agulha: data.agulha,
+    metros: metros.toFixed(2)
+  });
 
   salvarBtn.style.display = 'inline-block';
 });
 
-function abrirPopup() {
-  fetch("../config/verifica_login.php")
-    .then(res => {
-      if (res.status === 200) {
-        popupSalvar.showModal();
-      } else {
-        salvarTemporario();
-        popupLogin.showModal();
-      }
-    });
+// Autenticação
+async function abrirPopup() {
+  const res = await fetch("../api/auth/verificarsessao.php");
+  if (res.ok) {
+    popupSalvar.showModal();
+  } else {
+    salvarTemporario();
+    popupLogin.showModal();
+  }
 }
 
 function salvarTemporario() {
@@ -98,16 +94,12 @@ function restaurarTemporario() {
   if (!dados) return;
 
   document.getElementById('popup-nome').value = dados.nome || "";
-  form.dataset.tempo = dados.tempo;
-  form.dataset.uso = dados.uso;
-  form.dataset.gramas = dados.gramas;
-  form.dataset.agulha = dados.agulha;
-  form.dataset.metros = dados.metros;
+  Object.assign(form.dataset, dados);
 
   resultadoDiv.innerHTML = `
     <h3>Resultado:</h3>
     <p><strong>Tempo estimado:</strong> ${dados.tempo}</p>
-    <p><strong>Comprimento estimado de linha usada:</strong> ${dados.metros} metros</p>
+    <p><strong>Comprimento estimado:</strong> ${dados.metros} metros</p>
     <p><strong>Gramas estimadas:</strong> ${dados.gramas}</p>
     <p><strong>Uso estimado:</strong> ${dados.uso}</p>
   `;
@@ -117,37 +109,41 @@ function restaurarTemporario() {
   localStorage.removeItem("projeto_temp");
 }
 
-formLogin.addEventListener('submit', (e) => {
+// Login
+formLogin.addEventListener('submit', async (e) => {
   e.preventDefault();
   const dados = new FormData(formLogin);
-  fetch('../config/autenticar.php', { method: 'POST', body: dados })
-    .then(res => res.ok ? restaurarTemporario() : alert("Login falhou"))
-    .finally(() => popupLogin.close());
+  const res = await fetch('../api/auth/login.php', { method: 'POST', body: dados });
+  if (res.ok) {
+    restaurarTemporario();
+  } else {
+    alert('Login falhou.');
+  }
+  popupLogin.close();
 });
 
-formCadastro.addEventListener('submit', (e) => {
+// Cadastro
+formCadastro.addEventListener('submit', async (e) => {
   e.preventDefault();
   const dados = new FormData(formCadastro);
-  fetch('../config/registrar.php', { method: 'POST', body: dados })
-    .then(res => res.ok ? restaurarTemporario() : alert("Erro ao cadastrar"))
-    .finally(() => popupLogin.close());
+  const res = await fetch('../api/auth/registrar.php', { method: 'POST', body: dados });
+  if (res.ok) {
+    restaurarTemporario();
+  } else {
+    alert('Erro ao cadastrar.');
+  }
+  popupLogin.close();
 });
 
-formSalvar.addEventListener('submit', function (e) {
+// Salvar Projeto
+formSalvar.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const nome = document.getElementById('popup-nome').value;
-  const imagem = document.getElementById('popup-imagem').files[0];
+  const imagem = inputImagem.files[0];
 
-  if (!nome.trim()) {
-    alert("Digite o nome do projeto.");
-    return;
-  }
-
-  if (imagem && imagem.size > 25 * 1024 * 1024) {
-    alert("Imagem muito grande. Máximo: 25MB.");
-    return;
-  }
+  if (!nome.trim()) return alert("Digite o nome do projeto.");
+  if (imagem && imagem.size > 25 * 1024 * 1024) return alert("Imagem muito grande.");
 
   const dados = new FormData();
   dados.append("nome", nome);
@@ -158,34 +154,28 @@ formSalvar.addEventListener('submit', function (e) {
   dados.append("agulha", form.dataset.agulha);
   dados.append("metros", form.dataset.metros);
 
-  fetch("../config/salvar.php", {
-    method: "POST",
-    body: dados
-  })
-    .then(res => res.json())
-    .then(res => {
-      if (res.erro) {
-        alert("Erro: " + res.erro);
-        return;
-      }
+  try {
+    const res = await fetch("../api/projetos/salvar.php", { method: "POST", body: dados });
+    const resultado = await res.json();
 
-      alert(res.mensagem || "Projeto salvo com sucesso!");
-      popupSalvar.close();
-      formSalvar.reset();
-      window.location.href = "../config/perfil.php";
-    })
-    .catch(err => {
-      console.error("Erro ao salvar:", err);
-      alert("Erro ao salvar o projeto.");
-    });
+    if (!res.ok || resultado.erro) throw new Error(resultado.erro || "Erro desconhecido");
+
+    alert(resultado.mensagem || "Projeto salvo com sucesso!");
+    popupSalvar.close();
+    formSalvar.reset();
+    window.location.href = "../pages/perfil.php";
+  } catch (err) {
+    console.error("Erro ao salvar:", err);
+    alert("Erro ao salvar o projeto.");
+  }
 });
 
+// Imagem
 inputImagem.addEventListener('change', function () {
   const file = this.files[0];
-
   if (file) {
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = (e) => {
       previewImg.src = e.target.result;
       previewContainer.style.display = 'block';
     };
@@ -200,17 +190,15 @@ function removerImagem() {
   previewContainer.style.display = 'none';
 }
 
+// Alternar Login/Cadastro
 function trocarParaCadastro() {
   formLogin.style.display = "none";
   formCadastro.style.display = "block";
 }
-
 function trocarParaLogin() {
   formCadastro.style.display = "none";
   formLogin.style.display = "block";
 }
-
 function fecharPopup() {
   popupSalvar.close();
 }
-

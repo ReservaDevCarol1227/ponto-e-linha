@@ -1,3 +1,4 @@
+<!--- corrigido para api -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -8,7 +9,8 @@
 <body>
   <main>
     <h1>Conectar-se — Ponto&Linha</h1>
-    <form id="login-form" action="../config/autenticar.php" method="POST">
+
+    <form id="login-form" autocomplete="off">
       <label for="email">Email:</label>
       <input id="email" type="email" name="email" required><br>
 
@@ -17,7 +19,39 @@
 
       <button type="submit">Entrar</button>
     </form>
+
     <a href="cadastro.html">Criar conta</a>
   </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('login-form');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch('../api/auth/login.php', {
+            method: 'POST',
+            body: formData
+          });
+
+          const data = await response.json();
+          console.log('Resposta:', data);
+
+          if (data.success && data.redirect) {
+            window.location.href = data.redirect;
+          } else {
+            alert(data.erro || 'Credenciais inválidas.');
+          }
+        } catch (error) {
+          alert('Erro de conexão com o servidor.');
+          console.error(error);
+        }
+      });
+    });
+  </script>
 </body>
 </html>

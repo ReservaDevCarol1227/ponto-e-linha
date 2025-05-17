@@ -1,24 +1,58 @@
+<!--corrigido para api-->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
   <title>Cadastro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
   <main>
     <h1>Criar conta — Ponto&Linha</h1>
-    <form action="../config/registrar.php" method="POST">
+
+    <form id="cadastro-form" autocomplete="off">
       <label>Nome:</label>
       <input type="text" name="nome" required><br>
+
       <label>Email:</label>
-      <input type="email" name="email"  required><br>
+      <input type="email" name="email" required><br>
+
       <label>Senha:</label>
-      <input type="password" name="senha"><br>
+      <input type="password" name="senha" required><br>
+
       <label>Confirmar a senha:</label>
       <input type="password" name="conf_senha" required><br>
+
       <button type="submit">Criar e Entrar</button>
     </form>
+
     <a href="login.html">Voltar ao login</a>
   </main>
+
+  <script>
+    document.getElementById('cadastro-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+
+      try {
+        const response = await fetch('../api/auth/registrar.php', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.redirect) {
+          window.location.href = data.redirect;
+        } else {
+          alert(data.erro || 'Erro ao cadastrar. Verifique os campos.');
+        }
+      } catch (err) {
+        alert('Erro de conexão com o servidor.');
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>

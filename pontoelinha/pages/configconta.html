@@ -1,26 +1,71 @@
+<!--atualizado api-->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</body>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alterar Conta</title>
 </head>
 <body>
-    <h1> Altere seus dados aqui </h1>
-    <form action="../config/configconta.php" method="post">
-        <label>Nome:</label>
-        <input type="text" name="nome" required><br>
-        <label>Email:</label>
-        <input type="email" name="email" ><br>
-        <label>Senha:</label>
-        <input type="password" name="senha" ><br>
+  <h1>Altere seus dados aqui</h1>
 
-        <button type="submit">Atualizar</button> <br>
-        <button onclick="excluirconta()">Clique aqui</button>
-    </form>
+  <form id="form-conta">
+    <label>Nome:</label>
+    <input type="text" name="nome" required><br>
 
-    <script src="../assets/perfilscript.js"></script>
+    <label>Nova Senha:</label>
+    <input type="password" name="senha"><br>
+
+    <label>Confirmar Nova Senha:</label>
+    <input type="password" name="conf_senha"><br>
+
+    <button type="submit">Atualizar</button><br>
+  </form>
+
+  <button id="excluir-conta" style="margin-top: 20px;">Excluir minha conta</button>
+
+  <script>
+    document.getElementById('form-conta').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+
+      const response = await fetch('../api/usuario/configuracoes.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      const resultado = await response.json();
+      const divMensagem = document.getElementById('mensagem');
+
+      if (resultado.success) {
+        alert(resultado.mensagem || 'Dados atualizados com sucesso!');
+        window.location.href = 'perfil.php';
+      } else {
+        divMensagem.style.color = 'red';
+        divMensagem.textContent = resultado.erro || 'Erro ao atualizar os dados.';
+      }
+    });
+
+    document.getElementById('excluir-conta').addEventListener('click', function () {
+      if (confirm("Tem certeza que deseja excluir sua conta?")) {
+        fetch('../api/usuario/excluirconta.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({})
+        })
+        .then(res => res.json())
+        .then(response => {
+          if (response.success) {
+            alert('Conta excluída com sucesso!');
+            window.location.href = '../pages/index.html';
+          } else {
+            alert('Erro ao excluir conta: ' + (response.error || 'Erro desconhecido'));
+          }
+        })
+        .catch(() => alert('Erro ao conectar com o servidor.'));
+      }
+    });
+  </script>
 </body>
-</html>         
+</html>
