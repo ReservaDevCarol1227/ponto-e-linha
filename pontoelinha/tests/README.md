@@ -14,7 +14,7 @@ Precisa ter:
 
 - Banco de dados já criado (arquivo disponivel em databaseatualizado.sql) e funcionando no phpMyAdmin
 
-- Ter o Node.js baixado na máquina
+- Ter o Node baixado na máquina
 
 - Ter o Edge instalado e o msedgedriver.exe (disponível na pasta src) salvo na pasta chamada "WebDriver" na raiz do sistema (geralmente é a C:) - Ex: C:\WebDriver\msedgedriver.exe
 
@@ -42,4 +42,6 @@ Ponto Baixo: 100
 
 - Digite no terminal: npm install
 
-- Rode os testes digitando no terminal: npm test (esse comando rodará todos os testes, para rodar pastas específicas, consulte o README da pasta que você quer rodar)
+- Rode os testes digitando no terminal: npm test (esse comando rodará todos os testes (exceto o de integração), para rodar pastas específicas, consulte o README da pasta que você quer rodar)
+
+- Consulte o README da pasta "integration" para saber como rodar o teste de integração.

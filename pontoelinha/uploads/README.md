@@ -1,1 +1,1 @@
-Essa pasta aqui é para o sistema conseguir salvar imagens no banco de dados. Talvez quando vocês apaguem a pasta e colem de novo para rodar, as imagens quebrem, mas isso acontece porque a pasta foi apagada mas o banco continua ativo no phpadmin.
+Essa pasta aqui é para o sistema conseguir salvar imagens no banco de dados. Talvez quando você apague a pasta do "htdocs" e cole de novo para rodar, as imagens quebrem, mas isso acontece porque a pasta foi apagada mas o banco continua ativo no phpadmin.

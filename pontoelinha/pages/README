@@ -1,12 +1,10 @@
 A pasta de "pages" foi criada para armazernar:
 - HTML.
-
-LEMBRETE: a página de perfil não possui html, apenas php, logo ela está na pasta 'config'
+- perfil.php
 
 COMO RODAR O PROJETO USANDO O XAMPP
 
-"Mucho texto não quero ler"
-Aqui o tutorial em vídeo: https://youtu.be/kBf2RkSueRo
+Tutorial em vídeo: https://youtu.be/kBf2RkSueRo
 
 Passo 1:
 - Abra o XAMPP Control Panel
@@ -15,7 +13,7 @@ Passo 1:
    - MySQL
 
 
-Passo 2 (IMPORTANTE: VOCÊS VÃO TER QUE REPETIR ESSE PASSO SEMPRE QUE MEXEREM NO ARQUIVO, QUALQUER ALTERAÇÃO FEITA NO VS CODE, VOCÊS PRECISAM APAGAR A PASTA DO XAMPP E COLAR DE NOVO):
+Passo 2 (IMPORTANTE: VOCÊS VÃO TER QUE REPETIR ESSE PASSO SEMPRE QUE MEXEREM NO ARQUIVO, QUALQUER ALTERAÇÃO FEITA NO VS CODE, É NECESSÁRIO APAGAR A PASTA DO XAMPP E COLAR DE NOVO):
 - Vá até a pasta onde o XAMPP foi instalado
 - procure pela pasta htdocs
 - cole a pasta raiz do projeto na pasta htdocs
@@ -27,7 +25,7 @@ Passo 3:
 - selecionem o arquivo 'database.sql'
 - descam a página do php até o final e cliquem em importar
 
-Passo 4 (IMPORTANTE: VOCÊS VÃO REPETIR ESSE PASSO SEMPRE QUE QUISEREM RODAR O SITE):
+Passo 4 (IMPORTANTE: REPITA ESSE PASSO SEMPRE QUE QUISER RODAR O SITE):
 
-- acesse o localhost e digitem o arquivo que vocês querem
+- acesse o localhost no navegador e digitem o arquivo que vocês querem
 - http://localhost/pontoelinha/digita_a_pasta_onde_ta_o_arquivo/digita_aqui_a_pagina_q_vcs_querem_rodar_aqui (exs: http://localhost/pontoelinha/pages/calculadora.html | http://localhost/pontoelinha/config/perfil.php)
