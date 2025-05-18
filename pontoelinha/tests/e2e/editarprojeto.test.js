@@ -33,6 +33,11 @@ describe('CT-003 - Editar nome do projeto', () => {
     await driver.findElement(By.name('senha')).sendKeys('12345');
     await driver.findElement(By.css('form#login-form button[type="submit"]')).click();
 
+    await driver.wait(until.alertIsPresent(), 7000);
+    const alertaLogin = await driver.switchTo().alert();
+    log.success(`Alerta de login: "${await alertaLogin.getText()}"`);
+    await alertaLogin.accept();
+
     const url = await driver.getCurrentUrl();
     log.step(`URL atual após login: ${url}`);
 
@@ -43,9 +48,9 @@ describe('CT-003 - Editar nome do projeto', () => {
     log.step('Aguardando texto "Meus projetos:" aparecer...');
     await driver.wait(until.elementLocated(By.xpath("//*[contains(text(),'Meus projetos:')]")), 10000);
 
-    log.step('Aguardando botão do projeto "Tapetinho"...');
-    await driver.wait(until.elementLocated(By.xpath("//button[contains(.,'Tapetinho')]")), 10000);
-    const botaoProjeto = await driver.findElement(By.xpath("//button[contains(.,'Tapetinho')]"));
+    log.step('Aguardando botão do projeto "Tapete"...');
+    await driver.wait(until.elementLocated(By.xpath("//button[contains(.,'Tapete')]")), 10000);
+    const botaoProjeto = await driver.findElement(By.xpath("//button[contains(.,'Tapete')]"));
     await botaoProjeto.click();
 
     log.step('Aguardando botão "Editar nome do projeto"...');
@@ -61,7 +66,7 @@ describe('CT-003 - Editar nome do projeto', () => {
     await campoNome.sendKeys(Key.CONTROL, 'a');
     await campoNome.sendKeys(Key.BACK_SPACE);
 
-    const novoNome = "Tapetinho 100% Atualizado É Ruim de Aturar";
+    const novoNome = "Tapetinho";
     await campoNome.sendKeys(novoNome);
 
     log.step('Clicando em "Salvar Alterações"...');
