@@ -48,9 +48,9 @@ describe('CT-003 - Editar nome do projeto', () => {
     log.step('Aguardando texto "Meus projetos:" aparecer...');
     await driver.wait(until.elementLocated(By.xpath("//*[contains(text(),'Meus projetos:')]")), 10000);
 
-    log.step('Aguardando botão do projeto "Tapete"...');
-    await driver.wait(until.elementLocated(By.xpath("//button[contains(.,'Tapete')]")), 10000);
-    const botaoProjeto = await driver.findElement(By.xpath("//button[contains(.,'Tapete')]"));
+    log.step('Aguardando botão do projeto "Tapetinho"...');
+    await driver.wait(until.elementLocated(By.xpath("//button[contains(.,'Tapetinho')]")), 10000);
+    const botaoProjeto = await driver.findElement(By.xpath("//button[contains(.,'Tapetinho')]"));
     await botaoProjeto.click();
 
     log.step('Aguardando botão "Editar nome do projeto"...');
@@ -66,7 +66,7 @@ describe('CT-003 - Editar nome do projeto', () => {
     await campoNome.sendKeys(Key.CONTROL, 'a');
     await campoNome.sendKeys(Key.BACK_SPACE);
 
-    const novoNome = "Tapetinho";
+    const novoNome = "Tapetinho 100% Atualizado É Ruim de Aturar";
     await campoNome.sendKeys(novoNome);
 
     log.step('Clicando em "Salvar Alterações"...');

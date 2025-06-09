@@ -8,32 +8,50 @@ const agulhas = {
     "6.0": { co: 9, pbx: 9, pb: 11, pma: 12.5, pa: 14.5, pda: 17.5 },
     "6.5": { co: 9.5, pbx: 9.5, pb: 11.5, pma: 13, pa: 15, pda: 18 }
   };
-  
-  const tempos = {
-    co: 2, pbx: 3, pb: 5, pma: 7, pa: 9, pda: 11
+
+const tempos = {
+  co: 2, pbx: 3, pb: 5, pma: 7, pa: 9, pda: 11
+};
+
+function calcularTempoTotal(data) {
+  return Object.keys(tempos).reduce((total, tipo) => total + (data[tipo] * tempos[tipo]), 0);
+}
+
+function calcularCentimetros(data, agulhaData) {
+  if (!agulhaData) return 0;
+  return Object.keys(agulhaData).reduce((total, tipo) => total + (data[tipo] * agulhaData[tipo]), 0);
+}
+
+function converterParaMetros(cm) {
+  return cm / 100;
+}
+
+function calcularGramas(metros) {
+  return parseFloat((metros * 4.2).toFixed(1));
+}
+
+function calcularUso(metros) {
+  return parseFloat((metros * 4.0).toFixed(1));
+}
+
+function calcular(data) {
+  const tempoTotal = calcularTempoTotal(data);
+  const agulhaData = agulhas[data.agulha];
+  const cm = calcularCentimetros(data, agulhaData);
+  const metros = converterParaMetros(cm);
+  return {
+    tempoTotal,
+    metros,
+    gramas: calcularGramas(metros),
+    uso: calcularUso(metros)
   };
-  
-  function calcular(data) {
-    const tempoTotal = (data.co * tempos.co) + (data.pbx * tempos.pbx) +
-      (data.pb * tempos.pb) + (data.pma * tempos.pma) +
-      (data.pa * tempos.pa) + (data.pda * tempos.pda);
-  
-    const agulhaData = agulhas[data.agulha];
-    let centimetros = 0;
-    if (agulhaData) {
-      centimetros = (data.co * agulhaData.co) + (data.pbx * agulhaData.pbx) +
-        (data.pb * agulhaData.pb) + (data.pma * agulhaData.pma) +
-        (data.pa * agulhaData.pa) + (data.pda * agulhaData.pda);
-    }
-  
-    const metros = centimetros / 100;
-    return {
-      tempoTotal,
-      metros,
-      gramas: parseFloat((metros * 4.2).toFixed(1)),
-      uso: parseFloat((metros * 4.0).toFixed(1))
-    };
-  }
-  
-  module.exports = { calcular };
-  
+}
+
+module.exports = {
+  calcular,
+  calcularTempoTotal,
+  calcularCentimetros,
+  converterParaMetros,
+  calcularGramas,
+  calcularUso
+};
