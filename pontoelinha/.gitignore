@@ -3,10 +3,6 @@ node_modules/
 npm-debug.log*
 package-lock.json
 
-# Resultados dos testes
-coverage/
-*.log
-
 # VSCode
 .vscode/
 
