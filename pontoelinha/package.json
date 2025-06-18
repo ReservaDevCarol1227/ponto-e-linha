@@ -6,20 +6,29 @@
     "test": "jest",
     "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
-    "test:e2e": "jest tests/e2e"
+    "test:e2e": "jest tests/e2e",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "jest": "^29.7.0",
+    "jest": "^30.0.0",
     "jsdom": "^26.1.0",
-    "selenium-webdriver": "^4.32.0",
-    "supertest": "^7.1.0"
+    "selenium-webdriver": "^4.33.0",
+    "supertest": "^7.1.1"
   },
   "dependencies": {
     "chalk": "^4.1.2",
     "pontoelinha": "file:"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "text",
+      "html",
+      "lcov"
+    ]
   }
 }

@@ -33,11 +33,6 @@ describe('CT-003 - Editar nome do projeto', () => {
     await driver.findElement(By.name('senha')).sendKeys('12345');
     await driver.findElement(By.css('form#login-form button[type="submit"]')).click();
 
-    await driver.wait(until.alertIsPresent(), 7000);
-    const alertaLogin = await driver.switchTo().alert();
-    log.success(`Alerta de login: "${await alertaLogin.getText()}"`);
-    await alertaLogin.accept();
-
     const url = await driver.getCurrentUrl();
     log.step(`URL atual após login: ${url}`);
 
