@@ -21,10 +21,12 @@ fetch('../api/projetos/listar.php')
       projetoDiv.style.marginBottom = '20px';
 
       projetoDiv.innerHTML = `
-        <button onclick="toggleProjeto(${i})" style="font-size: 16px; padding: 10px; text-align: left; width: 100%; background: #f0f0f0; border: 1px solid #ccc;">
-          <strong>${proj.nome}</strong><br>
-          <span><strong>Tempo:</strong> ${proj.tempo_estimado}</span><br>
-          <span><strong>Uso:</strong> ${proj.uso_estimado}</span>
+        <button class="botao-expansivel" id="btn-${i}">
+          <strong class="projeto-nome">${proj.nome}</strong>
+            <div class="projeto-resumo" id="resumo-${i}">
+               <span class="projeto-tempo"><strong>Tempo:</strong> ${proj.tempo_estimado}</span><br>
+          <span class="projeto-uso"><strong>Uso:</strong> ${proj.uso_estimado}</span>
+        </div>
         </button>
 
         <div id="detalhes-${i}" style="display: none; margin-left: 15px; margin-top: 10px;">
@@ -34,18 +36,19 @@ fetch('../api/projetos/listar.php')
           <p><strong>Uso estimado:</strong> ${proj.uso_estimado}</p>
           <p><strong>Comprimento (metros):</strong> ${proj.metros || 'N/A'} m</p>
           <p><strong>Criado em:</strong> ${new Date(proj.criado_em).toLocaleDateString('pt-BR')}</p>
-
-          ${proj.imagem ? `<img src="../uploads/${proj.imagem}" alt="Imagem do projeto" style="max-width:100%; margin-top:10px;">` : ''}
-
-          <button onclick="mostrarFormularioEditar(${i})" style="margin-top: 10px;">Editar nome do projeto</button>
-          <button onclick="excluirprojeto(${i})" style="margin-top: 10px;">Excluir Projeto</button>
+          ${proj.imagem ? `<img src="../uploads/${proj.imagem}" alt="Imagem do projeto">` : ''}
+          <button class="button" onclick="mostrarFormularioEditar(${i})">Editar nome do projeto</button>
+          <button class="button danger" onclick="excluirprojeto(${i})">Excluir Projeto</button>
         </div>
 
         <div id="formulario-editar-${i}" style="display: none; margin-top: 15px;">
           <input type="text" id="editar-nome-${i}" value="${proj.nome}" placeholder="Novo nome do projeto">
-          <button onclick="editarProjeto(${i})" style="margin-top: 10px;">Salvar Alterações</button>
+          <button class="button" onclick="editarProjeto(${i})">Salvar Alterações</button>
         </div>
       `;
+
+      const botao = projetoDiv.querySelector(`#btn-${i}`);
+      botao.addEventListener('click', () => toggleProjeto(i));
 
       container.appendChild(projetoDiv);
     });
@@ -53,18 +56,25 @@ fetch('../api/projetos/listar.php')
 
 function toggleProjeto(id) {
   const detalhes = document.getElementById(`detalhes-${id}`);
-  const botao = detalhes.previousElementSibling;
-
   const aberto = detalhes.style.display === 'block';
   detalhes.style.display = aberto ? 'none' : 'block';
 
-  botao.innerHTML = aberto
-    ? `
-      <strong>${projetos[id].nome}</strong><br>
-      <span><strong>Tempo:</strong> ${projetos[id].tempo_estimado}</span><br>
-      <span><strong>Uso:</strong> ${projetos[id].uso_estimado}</span>
-    `
-    : `<strong>${projetos[id].nome}</strong>`;
+  const nome = projetos[id].nome;
+  const tempo = projetos[id].tempo_estimado;
+  const uso = projetos[id].uso_estimado;
+
+  const botao = document.getElementById(`btn-${id}`);
+  const nomeEl = botao.querySelector('.projeto-nome');
+  const tempoEl = botao.querySelector('.projeto-tempo');
+  const usoEl = botao.querySelector('.projeto-uso');
+
+  nomeEl.textContent = nome;
+
+  tempoEl.innerHTML = `<strong>Tempo:</strong> ${tempo}`;
+  usoEl.innerHTML = `<strong>Uso:</strong> ${uso}`;
+
+  const resumo = document.getElementById(`resumo-${id}`);
+  if (resumo) resumo.style.display = aberto ? 'block' : 'none';
 }
 
 function mostrarFormularioEditar(id) {
@@ -98,8 +108,7 @@ function editarProjeto(id) {
 }
 
 function excluirprojeto(id) {
-  const confirmacao = confirm("Tem certeza que deseja excluir este projeto?");
-  if (!confirmacao) return;
+  if (!confirm("Tem certeza que deseja excluir este projeto?")) return;
 
   const projeto = projetos[id];
 
@@ -123,13 +132,12 @@ function excluirprojeto(id) {
 }
 
 function excluirconta(id) {
-  const confirmacao = confirm("Tem certeza que deseja excluir sua conta?");
-  if (!confirmacao) return;
+  if (!confirm("Tem certeza que deseja excluir sua conta?")) return;
 
   fetch('../api/usuario/excluirconta.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ id: id })
+    body: JSON.stringify({ id })
   })
     .then(res => res.json())
     .then(response => {
