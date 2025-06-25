@@ -7,4 +7,4 @@ Integrantes:
 - Pedro Vitor Oliveira Matos - UC23102396
 - Renan Gama Oliveira da Silva - UC23102230
 
-  Vídeo da aplicação funcionando: https://youtube.com/shorts/9nrvf3LqaGg?feature=share
+  Vídeo da aplicação funcionando: https://youtube.com/shorts/9nrvf3LqaGg?feature=share ou https://drive.google.com/file/d/1NpW41rl7_VgvvaWPKGw0iDVrItsidobS/view?usp=sharing 
